@@ -24,16 +24,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmailIgnoreCase(email).orElseThrow(
-                () -> new NotFoundException("")
+                () -> new NotFoundException("User not " + email + " found")
         );
     }
 
     @Override
     public UserResponse getUserInfo() {
         UUID userId = getUserIdOfCurrentUser();
-        return userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("")
-        ).toResponse();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User not " + userId + " found")
+        );
+        return user.toResponse();
     }
 
     @Override

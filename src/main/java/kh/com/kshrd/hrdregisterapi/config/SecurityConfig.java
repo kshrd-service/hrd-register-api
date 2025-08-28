@@ -5,6 +5,7 @@ import kh.com.kshrd.hrdregisterapi.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,12 +33,26 @@ public class SecurityConfig {
         http
                 .cors(withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("api/v1/auths/**", "/v3/api-docs/**",
+                        .requestMatchers("/api/v1/auths/**", "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/addresses",
+                                "/api/v1/addresses/**",
+                                "/api/v1/educations",
+                                "/api/v1/educations/**",
+                                "/api/v1/generations",
+                                "/api/v1/generations/**",
+                                "/api/v1/provinces",
+                                "/api/v1/provinces/**",
+                                "/api/v1/universities",
+                                "/api/v1/universities/**",
+                                "/api/v1/baciis",
+                                "/api/v1/baciis/**"
+                        ).permitAll()
                         .anyRequest().authenticated())
-                .sessionManagement(sessionn -> sessionn.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntrypoint))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

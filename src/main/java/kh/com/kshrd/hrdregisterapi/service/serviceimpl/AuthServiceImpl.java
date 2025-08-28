@@ -12,7 +12,6 @@ import kh.com.kshrd.hrdregisterapi.model.entity.User;
 import kh.com.kshrd.hrdregisterapi.repository.UserRepository;
 import kh.com.kshrd.hrdregisterapi.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -22,10 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -66,10 +61,8 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(email, rawPassword)
             );
         } catch (DisabledException ex) {
-            log.debug("Disabled account for email={}", email);
             throw new UnauthorizeException("User account is disabled");
         } catch (BadCredentialsException ex) {
-            log.debug("Bad credentials for email={}", email);
             throw new UnauthorizeException("Invalid email or password");
         }
     }
