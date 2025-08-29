@@ -14,7 +14,7 @@ import java.util.UUID;
 @ToString
 @Entity
 @Table(name = "universities", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name", "abbreviation"})
+        @UniqueConstraint(columnNames = {"abbreviation"})
 })
 public class University {
 
@@ -23,15 +23,11 @@ public class University {
     private UUID universityId;
 
     @Column(nullable = false, unique = true)
-    private String name;
-
-    @Column(nullable = false, unique = true)
     private String abbreviation;
 
     public UniversityResponse toResponse(){
         return UniversityResponse.builder()
                 .universityId(this.universityId)
-                .name(this.name)
                 .abbreviation(this.abbreviation)
                 .build();
     }

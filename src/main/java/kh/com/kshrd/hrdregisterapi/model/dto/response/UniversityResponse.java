@@ -11,7 +11,6 @@ import java.util.UUID;
 public class UniversityResponse {
 
     private UUID universityId;
-    private String name;
     private String abbreviation;
 
 }

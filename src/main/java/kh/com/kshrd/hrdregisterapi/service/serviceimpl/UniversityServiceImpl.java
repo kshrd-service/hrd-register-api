@@ -25,8 +25,8 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public UniversityResponse createUniversity(UniversityRequest request) {
-        if (universityRepository.existsByNameAndAbbreviationIgnoreCase(request.getName(), request.getAbbreviation())) {
-            throw new ConflictException("University name and abbreviation already exists");
+        if (universityRepository.existsByAbbreviationIgnoreCase(request.getAbbreviation())) {
+            throw new ConflictException("University abbreviation already exists");
         }
         University saved = universityRepository.save(request.toEntity());
         return saved.toResponse();
@@ -69,8 +69,8 @@ public class UniversityServiceImpl implements UniversityService {
                 () -> new NotFoundException("University not " + universityId + " found")
         );
 
-        if (universityRepository.existsByNameAndAbbreviationIgnoreCase(request.getName(), request.getAbbreviation())) {
-            throw new ConflictException("University name already exists");
+        if (universityRepository.existsByAbbreviationIgnoreCase(request.getAbbreviation())) {
+            throw new ConflictException("University abbreviation already exists");
         }
 
         University saved = universityRepository.save(request.toEntity(universityId));

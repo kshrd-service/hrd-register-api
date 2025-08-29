@@ -19,15 +19,10 @@ public class UniversityRequest {
 
     @NotNull
     @NotBlank
-    private String name;
-
-    @NotNull
-    @NotBlank
     private String abbreviation;
 
     public University toEntity(){
         return University.builder()
-                .name(this.name)
                 .abbreviation(this.abbreviation)
                 .build();
     }
@@ -35,7 +30,6 @@ public class UniversityRequest {
     public University toEntity(UUID universityId){
         return University.builder()
                 .universityId(universityId)
-                .name(this.name)
                 .abbreviation(this.abbreviation)
                 .build();
     }
