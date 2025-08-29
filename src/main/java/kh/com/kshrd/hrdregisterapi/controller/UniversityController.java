@@ -86,7 +86,7 @@ public class UniversityController {
             @RequestParam(defaultValue = "1") @Positive int page,
             @RequestParam(defaultValue = "10") @Positive int size,
             @RequestParam(defaultValue = "universityId", required = false) String sortBy,
-            @RequestParam(defaultValue = "DESC", required = false) Sort.Direction direction
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
     ) {
         return buildResponse(
                 "Universities retrieved successfully",
@@ -106,7 +106,7 @@ public class UniversityController {
             @ApiResponse(responseCode = "400", description = "Invalid request body"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "University not found"),
-            @ApiResponse(responseCode = "409", description = "Conflict (e.g., duplicate name)")
+            @ApiResponse(responseCode = "409", description = "Conflict (e.g., duplicate abbreviation)")
     })
     @SecurityRequirement(name = "hrd")
     public ResponseEntity<APIResponse<UniversityResponse>> updateUniversityById(
@@ -139,7 +139,7 @@ public class UniversityController {
         return buildResponse(
                 "University deleted successfully",
                 null,
-                HttpStatus.NO_CONTENT
+                HttpStatus.OK
         );
     }
 }

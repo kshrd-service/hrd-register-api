@@ -11,6 +11,7 @@ import kh.com.kshrd.hrdregisterapi.service.BaciiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class BaciiServiceImpl implements BaciiService {
     private final BaciiRepository baciiRepository;
 
     @Override
+    @Transactional
     public BaciiResponse createBacii(BaciiRequest request) {
         if (baciiRepository.existsByGradeIgnoreCase(request.getGrade())) {
             throw new ConflictException("Bacii grade already exists");
@@ -62,6 +64,7 @@ public class BaciiServiceImpl implements BaciiService {
     }
 
     @Override
+    @Transactional
     public BaciiResponse updateBaciiById(UUID baciiId, BaciiRequest request) {
         Bacii bacii = baciiRepository.findById(baciiId).orElseThrow(
                 () -> new NotFoundException("Bacii not " + baciiId + " found")
@@ -76,6 +79,7 @@ public class BaciiServiceImpl implements BaciiService {
     }
 
     @Override
+    @Transactional
     public void deleteBaciiById(UUID baciiId) {
         Bacii bacii = baciiRepository.findById(baciiId).orElseThrow(
                 () -> new NotFoundException("Bacii not " + baciiId + " found")

@@ -86,7 +86,7 @@ public class BaciiController {
             @RequestParam(defaultValue = "1") @Positive int page,
             @RequestParam(defaultValue = "10") @Positive int size,
             @RequestParam(defaultValue = "baciiId", required = false) String sortBy,
-            @RequestParam(defaultValue = "DESC", required = false) Sort.Direction direction
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
     ) {
         return buildResponse(
                 "Baciis retrieved successfully",
@@ -139,7 +139,7 @@ public class BaciiController {
         return buildResponse(
                 "Bacii deleted successfully",
                 null,
-                HttpStatus.NO_CONTENT
+                HttpStatus.OK
         );
     }
 }

@@ -60,7 +60,6 @@ VALUES ('Phnom Penh'),
        ('Takeo'),
        ('Tboung Khmum');
 
-
 INSERT INTO universities (abbreviation)
 VALUES ('RUPP'),
        ('SETEC'),
@@ -102,6 +101,18 @@ VALUES ('RUPP'),
        ('CADT'),
        ('AU');
 
-
-
-
+INSERT INTO generations (generation)
+VALUES ('1st Generation'),
+       ('2nd Generation'),
+       ('3rd Generation'),
+       ('4th Generation'),
+       ('5th Generation'),
+       ('6th Generation'),
+       ('7th Generation'),
+       ('8th Generation'),
+       ('9th Generation'),
+       ('10th Generation'),
+       ('11th Generation'),
+       ('12th Generation'),
+       ('13th Generation'),
+       ('14th Generation');

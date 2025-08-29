@@ -11,6 +11,7 @@ import kh.com.kshrd.hrdregisterapi.service.UniversityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class UniversityServiceImpl implements UniversityService {
     private final UniversityRepository universityRepository;
 
     @Override
+    @Transactional
     public UniversityResponse createUniversity(UniversityRequest request) {
         if (universityRepository.existsByAbbreviationIgnoreCase(request.getAbbreviation())) {
             throw new ConflictException("University abbreviation already exists");
@@ -64,6 +66,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    @Transactional
     public UniversityResponse updateUniversityById(UUID universityId, UniversityRequest request) {
         University university = universityRepository.findById(universityId).orElseThrow(
                 () -> new NotFoundException("University not " + universityId + " found")
@@ -78,6 +81,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    @Transactional
     public void deleteUniversityById(UUID universityId) {
         University university = universityRepository.findById(universityId).orElseThrow(
                 () -> new NotFoundException("University not " + universityId + " found")

@@ -7,8 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -41,9 +41,9 @@ public class Candidate {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 10, unique = true)
     private String phoneNumber;
 
     @Column(nullable = false, unique = true, length = 100)
@@ -90,7 +90,7 @@ public class Candidate {
     @ToString.Exclude
     private Generation generation;
 
-    @OneToOne(mappedBy = "candidate", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL)
     private Payment payment;
 
     public CandidateResponse toResponse() {

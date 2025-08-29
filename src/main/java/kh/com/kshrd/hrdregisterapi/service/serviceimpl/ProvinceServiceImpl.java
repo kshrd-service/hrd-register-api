@@ -11,6 +11,7 @@ import kh.com.kshrd.hrdregisterapi.service.ProvinceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     private final ProvinceRepository provinceRepository;
 
     @Override
+    @Transactional
     public ProvinceResponse createProvince(ProvinceRequest request) {
         if (provinceRepository.existsByNameIgnoreCase(request.getName())) {
             throw new ConflictException("Province name already exists");
@@ -62,6 +64,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
+    @Transactional
     public ProvinceResponse updateProvinceById(UUID provinceId, ProvinceRequest request) {
         Province province = provinceRepository.findById(provinceId).orElseThrow(
                 () -> new NotFoundException("Province not " + provinceId + " found")
@@ -76,6 +79,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
+    @Transactional
     public void deleteProvinceById(UUID provinceId) {
         Province province = provinceRepository.findById(provinceId).orElseThrow(
                 () -> new NotFoundException("Province not " + provinceId + " found")

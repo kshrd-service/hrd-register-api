@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
 
     @Override
+    @Transactional
     public AddressResponse createAddress(AddressRequest request) {
         if (addressRepository.existsByNameIgnoreCase(request.getName())) {
             throw new ConflictException("Address name already exists");
@@ -65,6 +67,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public AddressResponse updateAddressById(UUID addressId, AddressRequest request) {
         Address address = addressRepository.findById(addressId).orElseThrow(
                 () -> new NotFoundException("Address not " + addressId + " found")
@@ -79,6 +82,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public void deleteAddressById(UUID addressId) {
         Address address = addressRepository.findById(addressId).orElseThrow(
                 () -> new NotFoundException("Address not " + addressId + " found")

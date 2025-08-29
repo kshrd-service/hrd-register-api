@@ -36,7 +36,7 @@ public class Payment {
     @Column(length = 120)
     private String payerName;
 
-    @Column(length = 2048)
+    @Column(length = 2048, nullable = false)
     private String khqrPayload;
 
     @Column(nullable = false, precision = 19, scale = 4)

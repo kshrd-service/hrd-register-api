@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auths/**", "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
-                        ).permitAll()
+                                ).permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/v1/addresses",
                                 "/api/v1/addresses/**",
@@ -49,8 +49,11 @@ public class SecurityConfig {
                                 "/api/v1/universities",
                                 "/api/v1/universities/**",
                                 "/api/v1/baciis",
-                                "/api/v1/baciis/**"
+                                "/api/v1/baciis/**",
+                                "/api/v1/candidates/**",
+                                "/api/v1/candidates"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/candidates").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntrypoint))

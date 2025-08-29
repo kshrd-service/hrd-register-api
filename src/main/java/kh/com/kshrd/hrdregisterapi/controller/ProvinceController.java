@@ -86,7 +86,7 @@ public class ProvinceController {
             @RequestParam(defaultValue = "1") @Positive int page,
             @RequestParam(defaultValue = "10") @Positive int size,
             @RequestParam(defaultValue = "provinceId", required = false) String sortBy,
-            @RequestParam(defaultValue = "DESC", required = false) Sort.Direction direction
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
     ) {
         return buildResponse(
                 "Provinces retrieved successfully",
@@ -139,7 +139,7 @@ public class ProvinceController {
         return buildResponse(
                 "Province deleted successfully",
                 null,
-                HttpStatus.NO_CONTENT
+                HttpStatus.OK
         );
     }
 }

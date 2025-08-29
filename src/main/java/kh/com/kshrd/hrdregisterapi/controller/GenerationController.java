@@ -86,7 +86,7 @@ public class GenerationController {
             @RequestParam(defaultValue = "1") @Positive int page,
             @RequestParam(defaultValue = "10") @Positive int size,
             @RequestParam(defaultValue = "generationId", required = false) String sortBy,
-            @RequestParam(defaultValue = "DESC", required = false) Sort.Direction direction
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
     ) {
         return buildResponse(
                 "Generations retrieved successfully",
@@ -139,7 +139,7 @@ public class GenerationController {
         return buildResponse(
                 "Generation deleted successfully",
                 null,
-                HttpStatus.NO_CONTENT
+                HttpStatus.OK
         );
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class EducationServiceImpl implements EducationService {
     private final EducationRepository educationRepository;
 
     @Override
+    @Transactional
     public EducationResponse createEducation(EducationRequest request) {
         if (educationRepository.existsByLevelOfEducationIgnoreCase(request.getLevelOfEducation())) {
             throw new ConflictException("Level Of Education already exists");
@@ -65,6 +67,7 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    @Transactional
     public EducationResponse updateEducationById(UUID educationId, EducationRequest request) {
         Education education = educationRepository.findById(educationId).orElseThrow(
                 () -> new NotFoundException("Education not " + educationRepository + " found")
@@ -79,6 +82,7 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    @Transactional
     public void deleteEducationById(UUID educationId) {
         Education education = educationRepository.findById(educationId).orElseThrow(
                 () -> new NotFoundException("Education not " + educationId + " found")

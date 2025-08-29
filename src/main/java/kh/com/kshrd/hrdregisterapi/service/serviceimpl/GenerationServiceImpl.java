@@ -11,6 +11,7 @@ import kh.com.kshrd.hrdregisterapi.service.GenerationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class GenerationServiceImpl implements GenerationService {
     private final GenerationRepository generationRepository;
 
     @Override
+    @Transactional
     public GenerationResponse createGeneration(GenerationRequest request) {
         if (generationRepository.existsByGenerationIgnoreCase(request.getGeneration())) {
             throw new ConflictException("Generation name already exists");
@@ -64,6 +66,7 @@ public class GenerationServiceImpl implements GenerationService {
     }
 
     @Override
+    @Transactional
     public GenerationResponse updateGenerationById(UUID generationId, GenerationRequest request) {
         Generation generation = generationRepository.findById(generationId).orElseThrow(
                 () -> new NotFoundException("Generation not " + generationId + " found")
@@ -78,6 +81,7 @@ public class GenerationServiceImpl implements GenerationService {
     }
 
     @Override
+    @Transactional
     public void deleteGenerationById(UUID generationId) {
         Generation generation = generationRepository.findById(generationId).orElseThrow(
                 () -> new NotFoundException("Generation not " + generationId + " found")
