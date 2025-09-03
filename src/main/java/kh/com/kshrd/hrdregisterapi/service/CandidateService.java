@@ -1,5 +1,6 @@
 package kh.com.kshrd.hrdregisterapi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import kh.com.kshrd.hrdregisterapi.model.dto.request.CandidateRequest;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponse;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.PagedResponse;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 public interface CandidateService {
 
-    CandidateResponse registerCandidate(CandidateRequest request);
+    CandidateResponse registerCandidate(CandidateRequest request) throws Exception;
 
     CandidateResponse getCandidateById(UUID candidateId);
 
@@ -20,4 +21,11 @@ public interface CandidateService {
 
     void deleteCandidateById(UUID candidateId);
 
+    void sendApplicationForm(UUID candidateId);
+
+    void resendApplicationForm(UUID candidateId);
+
+    void sendDonationForm(UUID candidateId) throws Exception;
+
+    void resendDonationForm(UUID candidateId) throws Exception;
 }

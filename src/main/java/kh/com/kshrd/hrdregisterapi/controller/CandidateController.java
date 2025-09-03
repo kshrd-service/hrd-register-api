@@ -42,7 +42,7 @@ public class CandidateController {
     })
     public ResponseEntity<APIResponse<CandidateResponse>> registerCandidate(
             @RequestBody @Valid CandidateRequest request
-    ) {
+    ) throws Exception {
         return buildResponse(
                 "Candidate registered successfully",
                 candidateService.registerCandidate(request),
@@ -124,7 +124,7 @@ public class CandidateController {
             tags = {"Candidate"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Candidate deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Candidate deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Candidate not found")
     })
@@ -139,4 +139,48 @@ public class CandidateController {
                 HttpStatus.OK
         );
     }
+
+    @PostMapping("/{candidate-id}/application-form/resend")
+    @Operation(
+            summary = "Resend application form",
+            description = "Resends the application form email to the candidate. Normally this is sent automatically after payment is marked PAID, but this endpoint allows manual resend by an authorized user.",
+            tags = {"Candidate"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Application form resent successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "Candidate not found")
+    })
+    @SecurityRequirement(name = "hrd")
+    public ResponseEntity<APIResponse<Void>> resendApplicationForm(@PathVariable("candidate-id") UUID candidateId) {
+        candidateService.resendApplicationForm(candidateId);
+        return buildResponse(
+                "Application form resent successfully",
+                null,
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/{candidate-id}/donation-form/resend")
+    @Operation(
+            summary = "Resend donation form",
+            description = "Resends the donation form email to the candidate. Normally this is sent during registration, but this endpoint allows manual resend by an authorized user.",
+            tags = {"Candidate"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Donation form resent successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "Candidate not found")
+    })
+    @SecurityRequirement(name = "hrd")
+    public ResponseEntity<APIResponse<Void>> resendDonationForm(@PathVariable("candidate-id") UUID candidateId) throws Exception {
+        candidateService.resendDonationForm(candidateId);
+        return buildResponse(
+                "Donation form resent successfully",
+                null,
+                HttpStatus.OK
+        );
+    }
+
+
 }

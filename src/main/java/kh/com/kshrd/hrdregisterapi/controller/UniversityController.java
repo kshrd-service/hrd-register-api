@@ -127,7 +127,7 @@ public class UniversityController {
             tags = {"University"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "University deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "University deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "University not found")
     })

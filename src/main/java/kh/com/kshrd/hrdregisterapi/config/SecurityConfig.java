@@ -51,9 +51,10 @@ public class SecurityConfig {
                                 "/api/v1/baciis",
                                 "/api/v1/baciis/**",
                                 "/api/v1/candidates/**",
-                                "/api/v1/candidates"
+                                "/api/v1/candidates",
+                                "/api/v1/files/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/candidates").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/candidates/**", "/api/v1/files/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntrypoint))

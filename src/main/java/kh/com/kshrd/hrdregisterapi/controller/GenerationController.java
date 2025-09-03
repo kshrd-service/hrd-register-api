@@ -127,7 +127,7 @@ public class GenerationController {
             tags = {"Generation"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Generation deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Generation deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Generation not found")
     })

@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, UUID> {
-    boolean existsByEmailAndPhoneNumberIgnoreCase(String email, String phoneNumber);
+    boolean existsByEmailOrPhoneNumberIgnoreCase(String email, String phoneNumber);
 }

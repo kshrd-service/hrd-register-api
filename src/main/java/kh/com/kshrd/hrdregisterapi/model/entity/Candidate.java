@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@ToString
+//@ToString
 @Table(name = "candidates",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email"),

@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @OpenAPIDefinition(info = @Info(title = "HRD Register Api",
@@ -19,7 +21,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         in = SecuritySchemeIn.HEADER
 )
 @SpringBootApplication
+@EnableScheduling
+@EnableAsync
 public class HrdRegisterApiApplication {
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(HrdRegisterApiApplication.class, args);

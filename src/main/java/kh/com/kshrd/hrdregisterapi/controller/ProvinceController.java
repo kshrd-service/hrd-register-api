@@ -127,7 +127,7 @@ public class ProvinceController {
             tags = {"Province"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Province deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Province deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Province not found")
     })

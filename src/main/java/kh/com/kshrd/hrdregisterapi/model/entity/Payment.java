@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@ToString
+//@ToString
 @Table(name = "payments")
 public class Payment {
 
@@ -30,27 +30,42 @@ public class Payment {
     @Column(nullable = false, length = 10)
     private Method method;
 
-    @Column(length = 120)
+    @Column(nullable = false, length = 120)
     private String billNo;
+
+    @Column(nullable = false, length = 120)
+    private String accountNo;
+
+    @Column(nullable = false, length = 2048)
+    private String khqrData;
+
+    @Column(length = 120)
+    private String payerBankName;
+
+    @Column(length = 120)
+    private String payerAccountNo;
 
     @Column(length = 120)
     private String payerName;
 
-    @Column(length = 2048, nullable = false)
-    private String khqrPayload;
+    @Column(length = 120)
+    private String payerRemark;
 
-    @Column(nullable = false, precision = 19, scale = 4)
+    @Column(precision = 19, scale = 4)
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(length = 10)
     private Currency currency;
 
-    @Column(nullable = false)
-    private Boolean paid;
+    @Column(length = 20)
+    private String paidStatus;
 
     @Column
     private LocalDateTime paidAt;
+
+    @Column(nullable = false)
+    private Boolean isSend;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -69,12 +84,17 @@ public class Payment {
                 .paymentId(this.paymentId)
                 .method(this.method)
                 .billNo(this.billNo)
+                .accountNo(this.accountNo)
+                .khqrData(this.khqrData)
+                .payerAccountNo(this.payerAccountNo)
+                .payerBankName(this.payerBankName)
                 .payerName(this.payerName)
-                .khqrPayload(this.khqrPayload)
+                .payerRemark(this.payerRemark)
                 .amount(this.amount)
                 .currency(this.currency)
-                .paid(this.paid)
+                .paidStatus(this.paidStatus)
                 .paidAt(this.paidAt)
+                .isSend(this.isSend)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
                 .build();

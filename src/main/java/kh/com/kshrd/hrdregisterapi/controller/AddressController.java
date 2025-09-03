@@ -127,7 +127,7 @@ public class AddressController {
             tags = {"Address"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Address deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Address deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Address not found")
     })

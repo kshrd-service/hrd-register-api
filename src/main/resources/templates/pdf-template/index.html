@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en" xml:lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Application and Donation Form - Korea Software HRD Center</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 24mm 18mm;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Khmer OS Siemreap", sans-serif;
+            color: #111827;
+            line-height: 1.5;
+            font-size: 18px;
+            background: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+            padding: 4px;
+        }
+
+        .title-lg {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0 6px 0;
+            text-align: center;
+        }
+
+        .contact-info {
+            color: #374151;
+            font-size: 16px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .section-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 20px;
+            margin: 15px 0 20px 0;
+            text-decoration: underline;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #111827;
+            margin-right: 6px;
+        }
+
+        .value {
+            color: #111827;
+        }
+
+        .logo {
+            width: 80px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .photo {
+            width: 150px;
+            height: 190px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .sig-table {
+            margin-top: 22px;
+        }
+
+        .sig-cell {
+            width: 50%;
+            text-align: center;
+            font-weight: 600;
+            height: 50px;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <table>
+        <tr>
+            <td style="width:90px; text-align:left;">
+                <img class="logo" th:src="@{classpath:static/images/KSHRD-Logo.png}" alt="KSHRD Logo"/>
+            </td>
+            <td style="text-align:center;">
+                <div class="title-lg">KOREA SOFTWARE HRD CENTER</div>
+                <div class="contact-info">
+                    #12, st. 323, Sangkat Boeung Kak II, Khan Toul Kork, Phnom Penh<br/>
+                    Tel: 023 991 314, 086 616 316, 017 503 532<br/>
+                    Email: info.kshrd@gmail.com, Website: www.kshrd.com.kh
+                </div>
+            </td>
+            <td style="width:90px; text-align:right;">
+                <img class="logo" th:src="@{classpath:static/images/KSGA-Logo.png}" alt="KSGA Logo"/>
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-title">APPLICATION AND DONATION FORM</div>
+
+    <table>
+        <tr>
+            <td style="padding-right:18px;">
+                <table>
+                    <tr>
+                        <td style="width:50%; padding-right:18px;">
+                            <p><span class="label">Full Name :</span><span class="value"
+                                                                           th:text="${candidate.fullName}">Full Name</span>
+                            </p>
+                            <p><span class="label">Gender :</span><span class="value" th:text="${candidate.gender}">Gender</span>
+                            </p>
+                            <p><span class="label">Date of Birth :</span><span class="value"
+                                                                               th:text="${candidate.dateOfBirth}">yyyy-mm-dd</span>
+                            </p>
+                            <p><span class="label">Place of Birth :</span><span class="value"
+                                                                                th:text="${candidate.province.name}">Place of Birth</span>
+                            </p>
+                            <p><span class="label">Email :</span><span class="value"
+                                                                       th:text="${candidate.email}">Email</span></p>
+                        </td>
+
+                        <td style="width:50%;">
+                            <p><span class="label">Academic Year :</span><span class="value"
+                                                                               th:text="${candidate.education.levelOfEducation}">Academic Year</span>
+                            </p>
+                            <p><span class="label">University :</span><span class="value"
+                                                                            th:text="${candidate.university.abbreviation}">Abbreviation</span>
+                            </p>
+                            <p><span class="label">Phone Number :</span><span class="value"
+                                                                              th:text="${candidate.phoneNumber}">Phone Number</span>
+                            </p>
+                            <p><span class="label">Current Address :</span><span class="value"
+                                                                                 th:text="${candidate.address.name}">Current Address</span>
+                            </p>
+                            <p><span class="label">Amount :</span><span class="value"
+                                                                        th:text="'$' + ${candidate.payment.amount}">0</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            <td style="width:170px; text-align:right;">
+                <img class="photo"
+                     th:src="${candidate.photoUrl}"
+                     alt="Student Photo"/>
+            </td>
+        </tr>
+    </table>
+
+    <table class="sig-table">
+        <tr>
+            <td class="sig-cell">Donated by</td>
+            <td class="sig-cell">Received by</td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>

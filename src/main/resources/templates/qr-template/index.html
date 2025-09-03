@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en" xml:lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Korea Software HRD Center - Donation Payment</title>
+    <style>
+        /* Email-safe CSS reset */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none
+        }
+
+        /* Main styles */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50
+        }
+
+        .email-wrapper {
+            width: 100%;
+            background: #f8f9fa;
+            padding: 40px 0
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .1);
+            overflow: hidden
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, #295F98 0%, #1e4a73 100%);
+            color: #fff;
+            padding: 32px 40px;
+            text-align: center
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -.5px
+        }
+
+        .email-header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+            opacity: .9
+        }
+
+        .email-content {
+            padding: 40px
+        }
+
+        .greeting {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: #2c3e50
+        }
+
+        .greeting strong {
+            color: #295F98;
+            font-weight: 600
+        }
+
+        .message-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #4a5568;
+            margin-bottom: 24px
+        }
+
+        .bill-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+            border: 1px solid #e2e8f0
+        }
+
+        .bill-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0
+        }
+
+        .logo-img {
+            width: 60px;
+            height: auto;
+            display: block
+        }
+
+        .bill-row {
+            margin-bottom: 24px
+        }
+
+        .bill-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 8px
+        }
+
+        .bill-value {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500
+        }
+
+        .amount-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #295F98
+        }
+
+        .payment-section {
+            background: #fff;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            padding: 24px;
+            margin-top: 24px
+        }
+
+        .payment-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0 0 8px
+        }
+
+        .payment-description {
+            font-size: 15px;
+            color: #718096;
+            line-height: 1.5;
+            margin: 0
+        }
+
+        .signature {
+            margin-top: 32px;
+            font-size: 16px;
+            color: #4a5568
+        }
+
+        .signature strong {
+            color: #295F98
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: #fff;
+            padding: 32px 40px;
+            text-align: center
+        }
+
+        .footer-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #fff
+        }
+
+        .footer-content {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: .9
+        }
+
+        .footer-content p {
+            margin: 8px 0
+        }
+
+        .footer-content a {
+            color: #81c784;
+            text-decoration: none
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline
+        }
+
+        .contact-info {
+            display: inline-block;
+            margin: 4px 0
+        }
+    </style>
+</head>
+<body>
+<div class="email-wrapper">
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Korea Software HRD Center</h1>
+            <p>Registration & Donation Payment</p>
+        </div>
+
+        <div class="email-content">
+            <div class="greeting">
+                Dear <strong th:text="${candidate.fullName}">Student Name</strong>,
+            </div>
+
+            <div class="message-text">
+                Thank you for registering with the Korea Software HRD Center. To complete your registration,
+                please make a donation using the KHQR code provided below. Once your payment is confirmed,
+                we will send you an <strong>application form</strong> for use during the examination via this email.
+            </div>
+
+            <div class="bill-container">
+
+                <!-- Email-safe table header for right-aligned logo -->
+                <table role="presentation" width="100%" style="border-collapse:collapse; margin:0 0 20px 0;">
+                    <tr>
+                        <td style="padding:0; vertical-align:middle;">
+                            <h2 class="bill-title">Donation Payment</h2>
+                        </td>
+                        <td style="padding:0; width:60px; text-align:right; vertical-align:middle;">
+                            <img src="cid:hrd-logo" alt="KSHRD Logo" class="logo-img"/>
+                        </td>
+                    </tr>
+                </table>
+                <div style="height:2px; background-color:#e2e8f0; border-radius:10px; margin-bottom:20px;"></div>
+
+                <div class="bill-row">
+                    <div class="bill-label">Bill No</div>
+                    <div class="bill-value" th:text="${candidate.payment.billNo}">BILL-2024-001</div>
+                </div>
+
+                <div class="bill-row">
+                    <div class="bill-label">Description</div>
+                    <div class="bill-value">Donation for Korea Software HRD Center</div>
+                </div>
+
+                <div class="bill-row">
+                    <div class="bill-label">Donation Amount</div>
+                    <div class="amount-value"
+                         th:text="${candidate.payment.amount != null ? '$' + candidate.payment.amount : '$5'}">
+                        $5
+                    </div>
+                </div>
+
+                <div class="payment-section">
+
+                    <!-- Use a 2-column table instead of flex for reliability -->
+                    <table role="presentation" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                            <td style="padding:0; vertical-align:top; width:200px;">
+                                <!-- QR wrapper with inline positioning so Gmail honors it -->
+                                <div style="position:relative; width:150px; height:150px; margin:0 auto;">
+                                    <img src="cid:qrcode-logo" alt="KHQR Payment Code"
+                                         style="position:absolute; inset:0; width:150px; height:150px; display:block; border-radius:8px;"/>
+                                </div>
+                            </td>
+                            <td style="padding:0 0 0 20px; vertical-align:middle;">
+                                <div class="payment-title">Payment Method</div>
+                                <p class="payment-description">
+                                    Scan this KHQR code to make your donation using any Cambodian bank mobile app.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="signature">
+                Sincerely,<br>
+                <strong>Korea Software HRD Center</strong><br>
+                <span style="color:#718096;">Administration Office</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-title">Korea Software HRD Center</div>
+            <div class="footer-content">
+                <div class="contact-info">
+                    <p><strong>Phone:</strong> (+855) 23 991 314</p>
+                    <p><strong>Email:</strong> <a href="mailto:info.kshrd@gmail.com">info.kshrd@gmail.com</a></p>
+                    <p><strong>Website:</strong> <a href="http://www.kshrd.com.kh" target="_blank">www.kshrd.com.kh</a>
+                    </p>
+                </div>
+                <p style="margin-top:16px; font-size:13px;">
+                    No. 12, St. 323, Sangkat Boeung Kak II, Khan Toul Kouk, Phnom Penh, Cambodia
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

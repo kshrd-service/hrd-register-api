@@ -127,7 +127,7 @@ public class BaciiController {
             tags = {"Bacii"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Bacii deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Bacii deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Bacii not found")
     })

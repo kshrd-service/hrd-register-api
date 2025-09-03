@@ -22,5 +22,37 @@ spring:
       hibernate:
         format_sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 20MB
+      max-request-size: 30MB
+
   secret-key: ${SECRET_KEY}
-  expiration: ${EXPIRATION}
+  expiration: 18000
+
+minio:
+  url: ${MINIO_URL}
+  access-key: ${MINIO_ACCESS_KEY}
+  secret-key: ${MINIO_SECRET_KEY}
+  bucket: ${MINIO_BUCKET}
+
+webill:
+  URL: ${WEBILL_URL}
+  client-id: ${WEBILL_CLIENT_ID}
+  client-secret: ${WEBILL_CLIENT_SECRET}
+  account-name: ${WEBILL_ACCOUNT_NAME}
+  account-no: ${WEBILL_ACCOUNT_NO}

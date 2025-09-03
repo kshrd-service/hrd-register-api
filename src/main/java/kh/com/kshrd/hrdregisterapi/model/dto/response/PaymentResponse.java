@@ -16,12 +16,17 @@ public class PaymentResponse {
     private UUID paymentId;
     private Method method;
     private String billNo;
+    private String accountNo;
+    private String khqrData;
+    private String payerBankName;
+    private String payerAccountNo;
     private String payerName;
-    private String khqrPayload;
+    private String payerRemark;
     private BigDecimal amount;
     private Currency currency;
-    private Boolean paid;
+    private String paidStatus;
     private LocalDateTime paidAt;
+    private Boolean isSend;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
