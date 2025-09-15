@@ -18,11 +18,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-//@ToString
+@ToString
 @Table(name = "candidates",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email"),
-                @UniqueConstraint(columnNames = "phone_number")
         })
 public class Candidate {
 
@@ -37,14 +36,14 @@ public class Candidate {
     private String khFullName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 15)
     private Gender gender;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 12)
     private String phoneNumber;
 
     @Column(nullable = false, unique = true, length = 100)
