@@ -10,10 +10,13 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5435:5432"
+    networks:
+      - hrd-register-api
 
   storage:
     image: minio/minio:latest
     command: minio server /var/lib/minio/data --console-address ":9001"
+    restart: always
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
@@ -22,6 +25,8 @@ services:
       - "9001:9001"
     volumes:
       - storage_data:/var/lib/minio/data
+    networks:
+      - hrd-register-api
 
   api:
     build:
@@ -33,6 +38,8 @@ services:
       - storage
     ports:
       - "8083:8080"
+    networks:
+      - hrd-register-api
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
@@ -57,3 +64,7 @@ services:
 volumes:
   db_data:
   storage_data:
+
+networks:
+  hrd-register-api:
+    external: true
