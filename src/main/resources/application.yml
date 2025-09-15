@@ -41,7 +41,8 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
 
-  secret-key: ${SECRET_KEY}
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
   expiration: 18000
 
 management:

@@ -17,10 +17,10 @@ import java.util.function.Function;
 @Component
 public class JwtComponent {
 
-    @Value("${spring.expiration}")
+    @Value("${jwt.expiration}")
     public long expiration;
 
-    @Value("${spring.secret-key}")
+    @Value("${jwt.secret-key}")
     public String secretKey;
 
     private String createToken(Map<String, Object> claim, String subject) {
