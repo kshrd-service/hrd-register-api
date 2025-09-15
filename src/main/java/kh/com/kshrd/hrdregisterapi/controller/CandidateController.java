@@ -72,50 +72,50 @@ public class CandidateController {
         );
     }
 
-    @GetMapping
-    @Operation(
-            summary = "List candidates (paged)",
-            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
-            tags = {"Candidate"}
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
-    })
-    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponse>>>> getAllCandidates(
-            @RequestParam(defaultValue = "1") @Positive int page,
-            @RequestParam(defaultValue = "10") @Positive int size,
-            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
-            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
-    ) {
-        return buildResponse(
-                "Candidates retrieved successfully",
-                candidateService.getAllCandidates(page, size, sortBy, direction),
-                HttpStatus.OK
-        );
-    }
+//    @GetMapping
+//    @Operation(
+//            summary = "List candidates (paged)",
+//            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
+//            tags = {"Candidate"}
+//    )
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
+//    })
+//    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponse>>>> getAllCandidates(
+//            @RequestParam(defaultValue = "1") @Positive int page,
+//            @RequestParam(defaultValue = "10") @Positive int size,
+//            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
+//            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
+//    ) {
+//        return buildResponse(
+//                "Candidates retrieved successfully",
+//                candidateService.getAllCandidates(page, size, sortBy, direction),
+//                HttpStatus.OK
+//        );
+//    }
 
-    @GetMapping("/admin")
-    @Operation(
-            summary = "List candidates (paged) for admin ",
-            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
-            tags = {"Candidate"}
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
-    })
-    @SecurityRequirement(name = "hrd")
-    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponseAdmin>>>> getAllCandidatesAdmin(
-            @RequestParam(defaultValue = "1") @Positive int page,
-            @RequestParam(defaultValue = "10") @Positive int size,
-            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
-            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
-    ) {
-        return buildResponse(
-                "Candidates retrieved successfully",
-                candidateService.getAllCandidatesAdmin(page, size, sortBy, direction),
-                HttpStatus.OK
-        );
-    }
+//    @GetMapping("/admin")
+//    @Operation(
+//            summary = "List candidates (paged) for admin ",
+//            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
+//            tags = {"Candidate"}
+//    )
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
+//    })
+//    @SecurityRequirement(name = "hrd")
+//    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponseAdmin>>>> getAllCandidatesAdmin(
+//            @RequestParam(defaultValue = "1") @Positive int page,
+//            @RequestParam(defaultValue = "10") @Positive int size,
+//            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
+//            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
+//    ) {
+//        return buildResponse(
+//                "Candidates retrieved successfully",
+//                candidateService.getAllCandidatesAdmin(page, size, sortBy, direction),
+//                HttpStatus.OK
+//        );
+//    }
 
     @GetMapping("/admin/{generation-id}")
     @Operation(

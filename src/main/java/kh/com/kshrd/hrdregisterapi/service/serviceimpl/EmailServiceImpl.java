@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("candidate", candidate);
 
-        String process = templateEngine.process("/application-form/index", context);
+        String process = templateEngine.process("application-form/index", context);
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -54,7 +54,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("candidate", candidate);
 
-        String process = templateEngine.process("/qr-template/index", context);
+        String process = templateEngine.process("qr-template/index", context);
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);

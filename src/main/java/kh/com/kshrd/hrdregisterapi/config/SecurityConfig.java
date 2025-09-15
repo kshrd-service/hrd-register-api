@@ -51,8 +51,7 @@ public class SecurityConfig {
                                 "/api/v1/universities/**",
                                 "/api/v1/baciis",
                                 "/api/v1/baciis/**",
-                                "/api/v1/candidates/{generation-id}",
-                                "/api/v1/candidates"
+                                "/api/v1/candidates/{generation-id}"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/candidates").permitAll()
                         .anyRequest().authenticated())
