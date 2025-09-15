@@ -33,9 +33,9 @@ services:
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     ports:
-      - "8003:8080"
-    depends_on: db
-#      - db
+      - "8083:8080"
+    depends_on:
+      - db
 
 volumes:
   db_data:

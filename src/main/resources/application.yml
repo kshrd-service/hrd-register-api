@@ -44,6 +44,12 @@ spring:
   secret-key: ${SECRET_KEY}
   expiration: 18000
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+
 minio:
   url: ${MINIO_URL}
   access-key: ${MINIO_ACCESS_KEY}

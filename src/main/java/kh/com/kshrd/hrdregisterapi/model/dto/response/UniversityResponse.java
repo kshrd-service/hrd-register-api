@@ -12,5 +12,6 @@ public class UniversityResponse {
 
     private UUID universityId;
     private String abbreviation;
+    private Integer sortOrder;
 
 }

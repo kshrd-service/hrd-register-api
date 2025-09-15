@@ -25,10 +25,14 @@ public class Generation {
     @Column(nullable = false, unique = true)
     private String generation;
 
+    @Column(nullable = false, unique = true)
+    private Integer sortOrder;
+
     public GenerationResponse toResponse(){
         return GenerationResponse.builder()
                 .generationId(this.generationId)
                 .generation(this.generation)
+                .sortOrder(this.sortOrder)
                 .build();
     }
 

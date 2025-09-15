@@ -8,6 +8,7 @@ import kh.com.kshrd.hrdregisterapi.exception.ConflictException;
 import kh.com.kshrd.hrdregisterapi.exception.NotFoundException;
 import kh.com.kshrd.hrdregisterapi.model.dto.request.CandidateRequest;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponse;
+import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponseAdmin;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.PagedResponse;
 import kh.com.kshrd.hrdregisterapi.model.entity.*;
 import kh.com.kshrd.hrdregisterapi.model.enums.Currency;
@@ -50,8 +51,8 @@ public class CandidateServiceImpl implements CandidateService {
     @Transactional
     public CandidateResponse registerCandidate(CandidateRequest request) throws Exception {
 
-        if (candidateRepository.existsByEmailOrPhoneNumberIgnoreCase(request.getEmail(), request.getPhoneNumber())) {
-            throw new ConflictException("Candidate email or phone number already exists");
+        if (candidateRepository.existsByEmailIgnoreCase(request.getEmail())) {
+            throw new ConflictException("Candidate email already exists");
         }
 
         Province province = provinceRepository.findById(request.getProvinceId())
@@ -110,11 +111,11 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateResponse getCandidateById(UUID candidateId) {
+    public CandidateResponseAdmin getCandidateById(UUID candidateId) {
         Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(
                 () -> new NotFoundException("Candidate not " + candidateId + " found")
         );
-        return candidate.toResponse();
+        return candidate.toResponseAdmin();
     }
 
     @Override
@@ -141,52 +142,133 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    @Transactional
-    public CandidateResponse updateCandidateById(UUID candidateId, CandidateRequest request) {
-        Candidate existing = candidateRepository.findById(candidateId).orElseThrow(
-                () -> new NotFoundException("Candidate not " + candidateId + " found")
+    public PagedResponse<List<CandidateResponseAdmin>> getAllCandidatesAdmin(
+            int page, int size, String sortBy, Sort.Direction direction
+    ) {
+        int zeroBased = Math.max(page, 1) - 1;
+        Pageable pageable = PageRequest.of(zeroBased, size, Sort.by(direction, sortBy));
+        Page<Candidate> pageCandidates = candidateRepository.findAll(pageable);
+
+        List<CandidateResponseAdmin> items = pageCandidates
+                .getContent()
+                .stream()
+                .map(Candidate::toResponseAdmin)
+                .toList();
+
+        return pageResponse(
+                items,
+                pageCandidates.getTotalElements(),
+                page,
+                size,
+                pageCandidates.getTotalPages()
         );
+    }
 
-        if (candidateRepository.existsByEmailOrPhoneNumberIgnoreCase(request.getEmail(), request.getPhoneNumber())) {
-            throw new ConflictException("Candidate email or phone number already exists");
-        }
+    @Override
+    public PagedResponse<List<CandidateResponseAdmin>> getAllCandidatesAdminByGenerationId(UUID generationId, int page, int size, String sortBy, Sort.Direction direction) {
+        Generation generation = generationRepository.findById(generationId)
+                .orElseThrow(() -> new NotFoundException("Generation not " + generationId + " found"));
+        int zeroBased = Math.max(page, 1) - 1;
+        Pageable pageable = PageRequest.of(zeroBased, size, Sort.by(direction, sortBy));
+        Page<Candidate> pageCandidates = candidateRepository.findAllByGeneration(generation, pageable);
 
-        Province province = provinceRepository.findById(request.getProvinceId())
-                .orElseThrow(() -> new NotFoundException("Province not " + request.getProvinceId() + " found"));
+        List<CandidateResponseAdmin> items = pageCandidates
+                .getContent()
+                .stream()
+                .map(Candidate::toResponseAdmin)
+                .toList();
 
-        Bacii bacii = baciiRepository.findById(request.getBaciiId())
-                .orElseThrow(() -> new NotFoundException("Bacii not " + request.getBaciiId() + " found"));
+        return pageResponse(
+                items,
+                pageCandidates.getTotalElements(),
+                page,
+                size,
+                pageCandidates.getTotalPages()
+        );
+    }
 
-        University university = universityRepository.findById(request.getUniversityId())
-                .orElseThrow(() -> new NotFoundException("University not " + request.getUniversityId() + " found"));
+    @Override
+    public PagedResponse<List<CandidateResponse>> getAllCandidatesByGenerationId(UUID generationId, int page, int size, String sortBy, Sort.Direction direction) {
+        Generation generation = generationRepository.findById(generationId)
+                .orElseThrow(() -> new NotFoundException("Generation not " + generationId + " found"));
+        int zeroBased = Math.max(page, 1) - 1;
+        Pageable pageable = PageRequest.of(zeroBased, size, Sort.by(direction, sortBy));
+        Page<Candidate> pageCandidates = candidateRepository.findAllByGeneration(generation, pageable);
 
-        Address address = addressRepository.findById(request.getAddressId())
-                .orElseThrow(() -> new NotFoundException("Address not " + request.getAddressId() + " found"));
+        List<CandidateResponse> items = pageCandidates
+                .getContent()
+                .stream()
+                .map(Candidate::toResponse)
+                .toList();
 
-        Education education = educationRepository.findById(request.getEducationId())
-                .orElseThrow(() -> new NotFoundException("Education not " + request.getEducationId() + " found"));
-
-        Generation generation = generationRepository.findById(request.getGenerationId())
-                .orElseThrow(() -> new NotFoundException("Generation not " + request.getGenerationId() + " found"));
-
-        Payment payment = existing.getPayment();
-
-        Candidate candidate = request.toEntity(candidateId, province, bacii, university, address, education, generation);
-        candidate.setPayment(payment);
-        if (payment != null) payment.setCandidate(candidate);
-
-        Candidate saved = candidateRepository.saveAndFlush(candidate);
-        return saved.toResponse();
+        return pageResponse(
+                items,
+                pageCandidates.getTotalElements(),
+                page,
+                size,
+                pageCandidates.getTotalPages()
+        );
     }
 
     @Override
     @Transactional
-    public void deleteCandidateById(UUID candidateId) {
-        Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(
-                () -> new NotFoundException("Candidate not " + candidateId + " found")
+    public CandidateResponseAdmin updateCandidateById(UUID candidateId, CandidateRequest request) {
+        Candidate existing = candidateRepository.findById(candidateId).orElseThrow(
+                () -> new NotFoundException("Candidate with id " + candidateId + " not found")
         );
-        candidate.setPayment(null);
-        candidateRepository.deleteById(candidate.getCandidateId());
+
+        if (!existing.getEmail().equalsIgnoreCase(request.getEmail())) {
+            if (candidateRepository.existsByEmailIgnoreCase(request.getEmail())) {
+                throw new ConflictException("Candidate email already exists");
+            }
+            existing.setEmail(request.getEmail());
+        }
+
+        Province province = provinceRepository.findById(request.getProvinceId())
+                .orElseThrow(() -> new NotFoundException("Province with id " + request.getProvinceId() + " not found"));
+
+        Bacii bacii = baciiRepository.findById(request.getBaciiId())
+                .orElseThrow(() -> new NotFoundException("Bacii with id " + request.getBaciiId() + " not found"));
+
+        University university = universityRepository.findById(request.getUniversityId())
+                .orElseThrow(() -> new NotFoundException("University with id " + request.getUniversityId() + " not found"));
+
+        Address address = addressRepository.findById(request.getAddressId())
+                .orElseThrow(() -> new NotFoundException("Address with id " + request.getAddressId() + " not found"));
+
+        Education education = educationRepository.findById(request.getEducationId())
+                .orElseThrow(() -> new NotFoundException("Education with id " + request.getEducationId() + " not found"));
+
+        Generation generation = generationRepository.findById(request.getGenerationId())
+                .orElseThrow(() -> new NotFoundException("Generation with id " + request.getGenerationId() + " not found"));
+
+        Payment payment = existing.getPayment();
+
+        Candidate candidate = request.toEntity(candidateId, province, bacii, university, address, education, generation);
+        candidate.setEmail(existing.getEmail());
+        candidate.setPayment(payment);
+
+        if (payment != null) payment.setCandidate(candidate);
+
+        Candidate saved = candidateRepository.saveAndFlush(candidate);
+        return saved.toResponseAdmin();
+    }
+
+
+    @Override
+    @Transactional
+    public void deleteCandidateById(UUID candidateId) {
+        Candidate candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new NotFoundException("Candidate " + candidateId + " not found"));
+
+        Payment payment = candidate.getPayment();
+        if (payment != null) {
+            payment.setCandidate(null);
+            candidate.setPayment(null);
+            paymentRepository.saveAndFlush(payment);
+        }
+
+        candidateRepository.deleteById(candidateId);
     }
 
     @Override

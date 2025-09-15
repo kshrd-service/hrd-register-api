@@ -1,6 +1,7 @@
 package kh.com.kshrd.hrdregisterapi.service.serviceimpl;
 
 import io.minio.*;
+import io.minio.messages.DeleteObject;
 import kh.com.kshrd.hrdregisterapi.exception.BadRequestException;
 import kh.com.kshrd.hrdregisterapi.model.entity.FileMetadata;
 import kh.com.kshrd.hrdregisterapi.service.FileService;
@@ -102,6 +103,17 @@ public class FileServiceImpl implements FileService {
     public InputStream getFileByFileName(String fileName) {
         return minioClient.getObject(
                 GetObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(fileName)
+                        .build()
+        );
+    }
+
+    @SneakyThrows
+    @Override
+    public void deleteImage(String fileName) {
+        minioClient.removeObject(
+                RemoveObjectArgs.builder()
                         .bucket(bucketName)
                         .object(fileName)
                         .build()

@@ -1,8 +1,8 @@
 package kh.com.kshrd.hrdregisterapi.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import kh.com.kshrd.hrdregisterapi.model.dto.request.CandidateRequest;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponse;
+import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponseAdmin;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.PagedResponse;
 import org.springframework.data.domain.Sort;
 
@@ -13,11 +13,11 @@ public interface CandidateService {
 
     CandidateResponse registerCandidate(CandidateRequest request) throws Exception;
 
-    CandidateResponse getCandidateById(UUID candidateId);
+    CandidateResponseAdmin getCandidateById(UUID candidateId);
 
     PagedResponse<List<CandidateResponse>> getAllCandidates(int page, int size, String sortBy, Sort.Direction direction);
 
-    CandidateResponse updateCandidateById(UUID candidateId, CandidateRequest request);
+    CandidateResponseAdmin updateCandidateById(UUID candidateId, CandidateRequest request);
 
     void deleteCandidateById(UUID candidateId);
 
@@ -28,4 +28,10 @@ public interface CandidateService {
     void sendDonationForm(UUID candidateId) throws Exception;
 
     void resendDonationForm(UUID candidateId) throws Exception;
+
+    PagedResponse<List<CandidateResponseAdmin>> getAllCandidatesAdmin(int page, int size, String sortBy, Sort.Direction direction);
+
+    PagedResponse<List<CandidateResponseAdmin>> getAllCandidatesAdminByGenerationId(UUID generationId, int page, int size, String sortBy, Sort.Direction direction);
+
+    PagedResponse<List<CandidateResponse>> getAllCandidatesByGenerationId(UUID generationId, int page, int size, String sortBy, Sort.Direction direction);
 }

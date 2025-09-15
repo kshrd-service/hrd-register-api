@@ -25,10 +25,14 @@ public class Address {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false, unique = true)
+    private Integer sortOrder;
+
     public AddressResponse toResponse() {
         return AddressResponse.builder()
                 .addressId(this.addressId)
                 .name(this.name)
+                .sortOrder(this.sortOrder)
                 .build();
     }
 

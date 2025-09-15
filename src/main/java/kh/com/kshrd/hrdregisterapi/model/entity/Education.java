@@ -25,10 +25,14 @@ public class Education {
     @Column(nullable = false, unique = true, name = "level_of_education")
     private String levelOfEducation;
 
+    @Column(nullable = false, unique = true)
+    private Integer sortOrder;
+
     public EducationResponse toResponse() {
         return EducationResponse.builder()
                 .educationId(this.educationId)
                 .levelOfEducation(this.levelOfEducation)
+                .sortOrder(this.sortOrder)
                 .build();
     }
 

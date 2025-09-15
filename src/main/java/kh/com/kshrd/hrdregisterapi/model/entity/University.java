@@ -25,10 +25,14 @@ public class University {
     @Column(nullable = false, unique = true)
     private String abbreviation;
 
+    @Column(nullable = false, unique = true)
+    private Integer sortOrder;
+
     public UniversityResponse toResponse(){
         return UniversityResponse.builder()
                 .universityId(this.universityId)
                 .abbreviation(this.abbreviation)
+                .sortOrder(this.sortOrder)
                 .build();
     }
 

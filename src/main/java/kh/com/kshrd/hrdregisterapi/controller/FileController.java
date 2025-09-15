@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.UUID;
 
 import static kh.com.kshrd.hrdregisterapi.utils.ResponseUtil.buildResponse;
 
@@ -41,6 +42,21 @@ public class FileController {
                 "Image uploaded successfully",
                 fileService.uploadImage(file),
                 HttpStatus.CREATED
+        );
+    }
+
+    @DeleteMapping(value = "/delete-image/{file-name}")
+    @Operation(
+            summary = "",
+            description = "",
+            tags = {"File"}
+    )
+    public ResponseEntity<APIResponse<Void>> deleteImage(@PathVariable("file-name") String fileName) {
+        fileService.deleteImage(fileName);
+        return buildResponse(
+                "",
+                null,
+                HttpStatus.OK
         );
     }
 

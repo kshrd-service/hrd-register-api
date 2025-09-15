@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CandidateResponse {
+public class CandidateResponseAdmin {
     private UUID candidateId;
     private String fullName;
     private String khFullName;
@@ -23,7 +23,6 @@ public class CandidateResponse {
     private String phoneNumber;
     private String email;
     private String photoUrl;
-    private String paidStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private ProvinceResponse provinceResponse;
@@ -32,4 +31,5 @@ public class CandidateResponse {
     private AddressResponse addressResponse;
     private EducationResponse educationResponse;
     private GenerationResponse generationResponse;
+    private PaymentResponse paymentResponse;
 }

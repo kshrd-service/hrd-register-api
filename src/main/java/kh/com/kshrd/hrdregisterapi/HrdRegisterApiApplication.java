@@ -25,8 +25,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 public class HrdRegisterApiApplication {
 
-
-
     public static void main(String[] args) {
         SpringApplication.run(HrdRegisterApiApplication.class, args);
     }

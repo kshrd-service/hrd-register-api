@@ -12,5 +12,6 @@ public class AddressResponse {
 
     private UUID addressId;
     private String name;
+    private Integer sortOrder;
 
 }

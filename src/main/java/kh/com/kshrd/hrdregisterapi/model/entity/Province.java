@@ -25,10 +25,14 @@ public class Province {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false, unique = true)
+    private Integer sortOrder;
+
     public ProvinceResponse toResponse(){
         return ProvinceResponse.builder()
                 .provinceId(this.provinceId)
                 .name(this.name)
+                .sortOrder(this.sortOrder)
                 .build();
     }
 

@@ -2,6 +2,7 @@ package kh.com.kshrd.hrdregisterapi.model.entity;
 
 import jakarta.persistence.*;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponse;
+import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponseAdmin;
 import kh.com.kshrd.hrdregisterapi.model.enums.Gender;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,7 +44,7 @@ public class Candidate {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false, length = 10, unique = true)
+    @Column(nullable = false, length = 10)
     private String phoneNumber;
 
     @Column(nullable = false, unique = true, length = 100)
@@ -90,11 +91,33 @@ public class Candidate {
     @ToString.Exclude
     private Generation generation;
 
-    @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "candidate", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Payment payment;
 
     public CandidateResponse toResponse() {
         return CandidateResponse.builder()
+                .candidateId(this.candidateId)
+                .fullName(this.fullName)
+                .khFullName(this.khFullName)
+                .gender(this.gender)
+                .dateOfBirth(this.dateOfBirth)
+                .phoneNumber(this.phoneNumber)
+                .email(this.email)
+                .photoUrl(this.photoUrl)
+                .paidStatus(payment.getPaidStatus())
+                .createdAt(this.createdAt)
+                .updatedAt(this.updatedAt)
+                .provinceResponse(this.province.toResponse())
+                .baciiResponse(this.bacii.toResponse())
+                .universityResponse(this.university.toResponse())
+                .addressResponse(this.address.toResponse())
+                .educationResponse(this.education.toResponse())
+                .generationResponse(this.generation.toResponse())
+                .build();
+    }
+
+    public CandidateResponseAdmin toResponseAdmin() {
+        return CandidateResponseAdmin.builder()
                 .candidateId(this.candidateId)
                 .fullName(this.fullName)
                 .khFullName(this.khFullName)

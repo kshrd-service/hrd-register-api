@@ -11,4 +11,5 @@ import java.util.UUID;
 public class EducationResponse {
     private UUID educationId;
     private String levelOfEducation;
+    private Integer sortOrder;
 }

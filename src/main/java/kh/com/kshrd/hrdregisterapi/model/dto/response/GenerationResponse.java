@@ -14,4 +14,5 @@ import java.util.UUID;
 public class GenerationResponse {
     private UUID generationId;
     private String generation;
+    private Integer sortOrder;
 }

@@ -11,4 +11,5 @@ import java.util.UUID;
 public class ProvinceResponse {
     private UUID provinceId;
     private String name;
+    private Integer sortOrder;
 }

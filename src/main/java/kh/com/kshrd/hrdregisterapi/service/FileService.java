@@ -12,4 +12,6 @@ public interface FileService {
     void uploadPdf(MultipartFile file);
 
     InputStream getFileByFileName(String fileName);
+
+    void deleteImage(String fileName);
 }

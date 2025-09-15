@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Positive;
 import kh.com.kshrd.hrdregisterapi.model.dto.request.CandidateRequest;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.APIResponse;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponse;
+import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponseAdmin;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.PagedResponse;
 import kh.com.kshrd.hrdregisterapi.service.CandidateService;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class CandidateController {
         );
     }
 
-    @GetMapping("/{candidate-id}")
+    @GetMapping("/{candidate-id}/admin")
     @Operation(
             summary = "Get candidate by ID",
             description = "Returns a candidate by its identifier.",
@@ -60,7 +61,8 @@ public class CandidateController {
             @ApiResponse(responseCode = "200", description = "Candidate retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Candidate not found")
     })
-    public ResponseEntity<APIResponse<CandidateResponse>> getCandidateById(
+    @SecurityRequirement(name = "hrd")
+    public ResponseEntity<APIResponse<CandidateResponseAdmin>> getCandidateById(
             @PathVariable("candidate-id") UUID candidateId
     ) {
         return buildResponse(
@@ -92,7 +94,77 @@ public class CandidateController {
         );
     }
 
-    @PutMapping("/{candidate-id}")
+    @GetMapping("/admin")
+    @Operation(
+            summary = "List candidates (paged) for admin ",
+            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
+            tags = {"Candidate"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
+    })
+    @SecurityRequirement(name = "hrd")
+    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponseAdmin>>>> getAllCandidatesAdmin(
+            @RequestParam(defaultValue = "1") @Positive int page,
+            @RequestParam(defaultValue = "10") @Positive int size,
+            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
+    ) {
+        return buildResponse(
+                "Candidates retrieved successfully",
+                candidateService.getAllCandidatesAdmin(page, size, sortBy, direction),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/admin/{generation-id}")
+    @Operation(
+            summary = "List candidates (paged) for admin by generation",
+            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
+            tags = {"Candidate"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
+    })
+    @SecurityRequirement(name = "hrd")
+    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponseAdmin>>>> getAllCandidatesAdminByGenerationId(
+            @PathVariable("generation-id") UUID generationId,
+            @RequestParam(defaultValue = "1") @Positive int page,
+            @RequestParam(defaultValue = "10") @Positive int size,
+            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
+    ) {
+        return buildResponse(
+                "Candidates retrieved successfully",
+                candidateService.getAllCandidatesAdminByGenerationId(generationId, page, size, sortBy, direction),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{generation-id}")
+    @Operation(
+            summary = "List candidates (paged) by generation",
+            description = "Returns paginated candidates. Use query params to control pagination and sorting.",
+            tags = {"Candidate"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Candidates retrieved successfully")
+    })
+    public ResponseEntity<APIResponse<PagedResponse<List<CandidateResponse>>>> getAllCandidatesByGenerationId(
+            @PathVariable("generation-id") UUID generationId,
+            @RequestParam(defaultValue = "1") @Positive int page,
+            @RequestParam(defaultValue = "10") @Positive int size,
+            @RequestParam(defaultValue = "candidateId", required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC", required = false) Sort.Direction direction
+    ) {
+        return buildResponse(
+                "Candidates retrieved successfully",
+                candidateService.getAllCandidatesByGenerationId(generationId, page, size, sortBy, direction),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/{candidate-id}/admin")
     @Operation(
             summary = "Update candidate",
             description = "Fully updates a candidate by ID.",
@@ -106,7 +178,7 @@ public class CandidateController {
             @ApiResponse(responseCode = "409", description = "Email or phone already exists")
     })
     @SecurityRequirement(name = "hrd")
-    public ResponseEntity<APIResponse<CandidateResponse>> updateCandidateById(
+    public ResponseEntity<APIResponse<CandidateResponseAdmin>> updateCandidateById(
             @PathVariable("candidate-id") UUID candidateId,
             @RequestBody @Valid CandidateRequest request
     ) {
@@ -117,7 +189,7 @@ public class CandidateController {
         );
     }
 
-    @DeleteMapping("/{candidate-id}")
+    @DeleteMapping("/{candidate-id}/admin")
     @Operation(
             summary = "Delete candidate",
             description = "Deletes a candidate by ID.",

@@ -76,7 +76,7 @@ public class Payment {
     private LocalDateTime updatedAt;
 
     @OneToOne
-    @JoinColumn(name = "candidate_id", nullable = false, foreignKey = @ForeignKey(name = "fk_payment_candidate"))
+    @JoinColumn(name = "candidate_id", foreignKey = @ForeignKey(name = "fk_payment_candidate"))
     private Candidate candidate;
 
     public PaymentResponse toResponse() {

@@ -93,7 +93,7 @@ public class WebillServiceImpl implements WebillService {
         String issueDatetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
         LocalDateTime today = LocalDateTime.now();
-        LocalDateTime writingTest = LocalDateTime.of(2025, 9, 3, 0, 0);
+        LocalDateTime writingTest = LocalDateTime.of(2025, 12, 3, 0, 0);
 
         long daysBetween = ChronoUnit.DAYS.between(today, writingTest);
         String paymentTerm = String.valueOf(daysBetween);

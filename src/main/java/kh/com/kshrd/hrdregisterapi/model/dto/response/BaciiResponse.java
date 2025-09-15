@@ -11,4 +11,5 @@ import java.util.UUID;
 public class BaciiResponse {
     private UUID baciiId;
     private String grade;
+    private Integer sortOrder;
 }
