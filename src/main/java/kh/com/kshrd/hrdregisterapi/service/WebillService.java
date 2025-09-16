@@ -11,6 +11,6 @@ public interface WebillService {
 
     JsonNode createQuickBill() throws JsonProcessingException;
 
-    JsonNode checkPaymentStatus(List<String> billNo) throws JsonProcessingException;
+    JsonNode checkPaymentStatus(String billNo) throws JsonProcessingException;
 
 }

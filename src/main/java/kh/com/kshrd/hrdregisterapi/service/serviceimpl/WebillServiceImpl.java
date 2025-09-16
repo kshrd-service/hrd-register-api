@@ -131,19 +131,18 @@ public class WebillServiceImpl implements WebillService {
     }
 
     @Override
-    public JsonNode checkPaymentStatus(List<String> billNo) throws JsonProcessingException {
-
+    public JsonNode checkPaymentStatus(String billNo) throws JsonProcessingException {
         String accessToken = requestAccessToken();
 
-        WebillPaymentStatusRequest webillPaymentStatusRequest = WebillPaymentStatusRequest.builder()
-                .billNo(billNo)
+        WebillPaymentStatusRequest request = WebillPaymentStatusRequest.builder()
+                .billNo(List.of(billNo))
                 .build();
 
         String json = restClient.post()
                 .uri(url + "/api/wbi/client/v1/payments/check-status")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + accessToken)
-                .body(webillPaymentStatusRequest)
+                .body(request)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (req, res) -> {
                     String errorBody = StreamUtils.copyToString(res.getBody(), StandardCharsets.UTF_8);
@@ -159,4 +158,5 @@ public class WebillServiceImpl implements WebillService {
 
         return objectMapper.readTree(json);
     }
+
 }

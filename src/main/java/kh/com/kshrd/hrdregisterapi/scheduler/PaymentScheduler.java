@@ -29,7 +29,6 @@ public class PaymentScheduler {
     private final CandidateService candidateService;
     private final PaymentService paymentService;
 
-    private static final int BATCH_SIZE = 100;
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
 
@@ -38,50 +37,36 @@ public class PaymentScheduler {
         final List<String> billNos = safeList(paymentRepository.findAllBillNoNotPaid());
         if (billNos.isEmpty()) return;
 
-        for (int start = 0; start < billNos.size(); start += BATCH_SIZE) {
-            final List<String> chunk = billNos.subList(start, Math.min(start + BATCH_SIZE, billNos.size()));
-            try {
-                processChunkIndexPaired(chunk);
-            } catch (Exception ignored) {
-            }
-        }
-    }
-
-    private void processChunkIndexPaired(List<String> chunk) throws JsonProcessingException {
-        final JsonNode result = webillService.checkPaymentStatus(chunk);
-        final JsonNode data = result.path("data");
-        if (!data.isArray() || data.isEmpty()) return;
-
-        final List<Payment> payments = safeList(paymentRepository.findAllByBillNoIn(chunk));
-        if (payments.isEmpty()) return;
-
-        final Map<String, Integer> chunkIndex = new HashMap<>(chunk.size());
-        for (int i = 0; i < chunk.size(); i++) {
-            String billNo = chunk.get(i);
-            if (billNo != null && !billNo.isBlank()) {
-                chunkIndex.put(billNo, i);
-            }
-        }
-
         final List<Payment> dirty = new ArrayList<>();
-        for (Payment payment : payments) {
-            final String dbBillNo = payment.getBillNo();
-            if (dbBillNo == null || dbBillNo.isBlank()) continue;
 
-            final Integer idx = chunkIndex.get(dbBillNo);
-            if (idx == null || idx < 0) continue;
-            if (idx >= data.size()) continue;
+        for (String billNo : billNos) {
+            if (billNo == null || billNo.isBlank()) continue;
 
-            final JsonNode node = data.get(idx);
-            if (node == null || node.isNull()) continue;
-
-            updatePayment(payment, node);
-            dirty.add(payment);
+            try {
+                processSingleBillNo(billNo).ifPresent(dirty::add);
+            } catch (Exception ex) {
+                log.warn("Failed to check payment for billNo {}: {}", billNo, ex.getMessage());
+            }
         }
 
         if (!dirty.isEmpty()) {
             paymentService.persistUpdatedPayments(dirty);
         }
+    }
+
+    private Optional<Payment> processSingleBillNo(String billNo) throws JsonProcessingException {
+        final JsonNode result = webillService.checkPaymentStatus(billNo);
+        final JsonNode data = result.path("data");
+        if (!data.isArray() || data.isEmpty()) return Optional.empty();
+
+        final Payment payment = paymentRepository.findByBillNo(billNo).orElse(null);
+        if (payment == null) return Optional.empty();
+
+        final JsonNode node = data.get(0);
+        if (node == null || node.isNull()) return Optional.empty();
+
+        updatePayment(payment, node);
+        return Optional.of(payment);
     }
 
 
