@@ -10,13 +10,13 @@ COPY build.gradle .
 COPY settings.gradle .
 
 # Pre-download dependencies (without running full build)
-RUN ./gradlew dependencies --no-daemon || true
+RUN gradle dependencies --no-daemon || true
 
 # Now copy the full source
 COPY . .
 
 # Build the application (skip tests if desired)
-RUN ./gradlew clean build -x test --no-daemon
+RUN gradle clean build -x test --no-daemon
 
 # RUN STAGE
 FROM eclipse-temurin:21.0.7_6-jre-ubi9-minimal
