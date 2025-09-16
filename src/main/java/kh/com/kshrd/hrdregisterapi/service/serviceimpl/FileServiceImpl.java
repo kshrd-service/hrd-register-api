@@ -56,9 +56,11 @@ public class FileServiceImpl implements FileService {
                         .build()
         );
 
-        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/v1/files/preview-file/" + fileName)
-                .toUriString();
+//        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/api/v1/files/preview-file/" + fileName)
+//                .toUriString();
+
+        String fileUrl = "https://api-register.kshrd.app/api/v1/files/preview-file/" + fileName;
 
         return FileMetadata.builder()
                 .fileName(fileName)
