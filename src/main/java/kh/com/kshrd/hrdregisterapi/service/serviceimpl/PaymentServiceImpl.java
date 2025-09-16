@@ -18,13 +18,24 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public void persistUpdatedPayments(List<Payment> updated) {
         if (updated == null || updated.isEmpty()) return;
-        paymentRepository.saveAll(updated);
+        for (Payment payment : updated) {
+            if (payment.getBillNo() == null || payment.getBillNo().isBlank()) continue;
+            paymentRepository.updateByBillNo(payment);
+        }
     }
 
     @Transactional
     public void markAsSent(List<Payment> payments) {
         if (payments == null || payments.isEmpty()) return;
-        paymentRepository.saveAll(payments);
+
+        List<String> billNos = payments.stream()
+                .map(Payment::getBillNo)
+                .filter(b -> b != null && !b.isBlank())
+                .toList();
+
+        if (!billNos.isEmpty()) {
+            paymentRepository.markAsSentByBillNos(billNos);
+        }
     }
 
 }
