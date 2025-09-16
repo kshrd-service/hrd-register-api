@@ -53,32 +53,34 @@ public class PaymentScheduler {
         final List<Payment> payments = safeList(paymentRepository.findAllByBillNoIn(chunk));
         if (payments.isEmpty()) return;
 
-        final Map<String, Payment> byBillNo = payments.stream()
-                .filter(p -> p.getBillNo() != null && !p.getBillNo().isBlank())
-                .collect(Collectors.toMap(Payment::getBillNo, p -> p, (a, b) -> a));
-
-        final int reqSize = chunk.size();
-        final int resSize = data.size();
-        final int size = Math.min(reqSize, resSize);
-
-        final List<Payment> dirty = new ArrayList<>(size);
-
-        for (int i = 0; i < size; i++) {
+        final Map<String, Integer> chunkIndex = new HashMap<>(chunk.size());
+        for (int i = 0; i < chunk.size(); i++) {
             final String billNo = chunk.get(i);
-            if (billNo == null || billNo.isBlank()) continue;
+            if (billNo != null && !billNo.isBlank()) {
+                chunkIndex.putIfAbsent(billNo, i);
+            }
+        }
 
-            final Payment payment = byBillNo.get(billNo);
-            if (payment == null) continue;
+        final List<Payment> dirty = new ArrayList<>();
+        for (Payment payment : payments) {
+            final String dbBillNo = payment.getBillNo();
+            if (dbBillNo == null || dbBillNo.isBlank()) continue;
 
-            final JsonNode node = data.get(i);
+            final Integer idx = chunkIndex.get(dbBillNo);
+            if (idx == null || idx < 0 || idx >= data.size()) continue;
+
+            final JsonNode node = data.get(idx);
             if (node == null || node.isNull()) continue;
 
             updatePayment(payment, node);
             dirty.add(payment);
         }
 
-        paymentService.persistUpdatedPayments(dirty);
+        if (!dirty.isEmpty()) {
+            paymentService.persistUpdatedPayments(dirty);
+        }
     }
+
 
     @Scheduled(fixedDelay = 60_000)
     public void checkPaymentAndSendApplicationForm() {
