@@ -105,7 +105,7 @@ public class WebillServiceImpl implements WebillService {
                 .issueDatetime(issueDatetime)
                 .paymentTerm(paymentTerm)
                 .parentAccountNo(accountNo)
-                .amount("0.01")
+                .amount("5")
                 .remark("Donation For Korea Software HRD Center")
                 .build();
 
