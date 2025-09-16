@@ -37,7 +37,7 @@ public class CandidateRequest {
     @NotNull
     @NotBlank
     @Pattern(
-            regexp = "^0\\d{7,11}$",
+            regexp = "^0\\d{8,9}$",
             message = "Phone number must start with 0 and contain 9–10 digits"
     )
     private String phoneNumber;
