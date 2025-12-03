@@ -3,6 +3,7 @@ package kh.com.kshrd.hrdregisterapi.service;
 import kh.com.kshrd.hrdregisterapi.model.entity.FileMetadata;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 public interface FileService {
@@ -14,4 +15,6 @@ public interface FileService {
     InputStream getFileByFileName(String fileName);
 
     void deleteImage(String fileName);
+
+    List<String> getAllPdfFileNames();
 }

@@ -1,7 +1,7 @@
 package kh.com.kshrd.hrdregisterapi.service.serviceimpl;
 
 import io.minio.*;
-import io.minio.messages.DeleteObject;
+import io.minio.messages.Item;
 import kh.com.kshrd.hrdregisterapi.exception.BadRequestException;
 import kh.com.kshrd.hrdregisterapi.model.entity.FileMetadata;
 import kh.com.kshrd.hrdregisterapi.service.FileService;
@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -56,11 +58,11 @@ public class FileServiceImpl implements FileService {
                         .build()
         );
 
-//        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/api/v1/files/preview-file/" + fileName)
-//                .toUriString();
+        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/files/preview-file/" + fileName)
+                .toUriString();
 
-        String fileUrl = "https://api-register.kshrd.app/api/v1/files/preview-file/" + fileName;
+//        String fileUrl = "https://api-register.kshrd.app/api/v1/files/preview-file/" + fileName;
 
         return FileMetadata.builder()
                 .fileName(fileName)
@@ -120,6 +122,27 @@ public class FileServiceImpl implements FileService {
                         .object(fileName)
                         .build()
         );
+    }
+
+    @Override
+    @SneakyThrows
+    public List<String> getAllPdfFileNames() {
+        Iterable<Result<Item>> results = minioClient.listObjects(
+                ListObjectsArgs.builder()
+                        .bucket(bucketName)
+                        .build()
+        );
+
+        List<String> pdfFileNames = new ArrayList<>();
+        for (Result<Item> result : results) {
+            Item item = result.get();
+            String fileName = item.objectName();
+            if (fileName.toLowerCase().endsWith(".pdf")) {
+                pdfFileNames.add(fileName);
+            }
+        }
+
+        return pdfFileNames;
     }
 
 }

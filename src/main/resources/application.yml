@@ -15,12 +15,12 @@ spring:
 
   jpa:
     database: postgresql
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 
   mail:
     host: smtp.gmail.com
