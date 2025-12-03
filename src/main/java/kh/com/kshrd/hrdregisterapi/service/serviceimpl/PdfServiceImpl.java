@@ -54,4 +54,24 @@ public class PdfServiceImpl implements PdfService {
             throw new BadRequestException("Failed generating PDF");
         }
     }
+
+    @Override
+    public byte[] generatePdfUsingFullName(Candidate candidate) {
+        Context ctx = new Context();
+        ctx.setVariable("candidate", candidate);
+
+        String html = templateEngine.process("pdf-template/index", ctx);
+
+        ITextRenderer renderer = new ITextRenderer();
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            renderer.setDocumentFromString(html);
+            renderer.layout();
+            renderer.createPDF(baos);
+
+            return baos.toByteArray();
+        } catch (Exception e) {
+            throw new BadRequestException("Failed generating PDF for: " + candidate.getFullName());
+        }
+    }
 }

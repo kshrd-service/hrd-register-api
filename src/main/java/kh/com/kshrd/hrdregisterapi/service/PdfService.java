@@ -6,4 +6,6 @@ public interface PdfService {
 
     byte[] generatePdf(Candidate candidate);
 
+    byte[] generatePdfUsingFullName(Candidate candidate);
+
 }

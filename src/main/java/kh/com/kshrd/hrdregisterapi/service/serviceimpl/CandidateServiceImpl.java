@@ -211,6 +211,11 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    public List<Candidate> getAllCandidatesPaid() {
+        return candidateRepository.findAllByPaymentPaidStatus("Paid");
+    }
+
+    @Override
     @Transactional
     public CandidateResponseAdmin updateCandidateById(UUID candidateId, CandidateRequest request) {
         Candidate existing = candidateRepository.findById(candidateId).orElseThrow(

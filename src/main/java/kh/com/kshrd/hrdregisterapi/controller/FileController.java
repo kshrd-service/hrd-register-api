@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.APIResponse;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponseAdmin;
+import kh.com.kshrd.hrdregisterapi.model.entity.Candidate;
 import kh.com.kshrd.hrdregisterapi.model.entity.FileMetadata;
 import kh.com.kshrd.hrdregisterapi.service.CandidateService;
 import kh.com.kshrd.hrdregisterapi.service.FileService;
+import kh.com.kshrd.hrdregisterapi.service.PdfService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ContentDisposition;
@@ -38,6 +40,7 @@ public class FileController {
 
     private final FileService fileService;
     private final CandidateService candidateService;
+    private final PdfService pdfService;
 
     @PostMapping(value = "/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
@@ -174,6 +177,47 @@ public class FileController {
                         .build()
         );
 
+        headers.setCacheControl(CacheControl.noCache());
+
+        return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/generate/download-all-pdfs")
+    @Operation(
+            summary = "Generate And Download all PDF files as ZIP",
+            description = "Downloads all PDF files in a single ZIP archive",
+            tags = {"File"}
+    )
+    @SecurityRequirement(name = "hrd")
+    public ResponseEntity<byte[]> generateDownloadAllPdfFiles(@RequestParam String zipFileName) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+            List<Candidate> candidatesPaid = candidateService.getAllCandidatesPaid();
+
+            for (Candidate candidate : candidatesPaid) {
+                try {
+                    byte[] pdfBytes = pdfService.generatePdfUsingFullName(candidate);
+
+                    ZipEntry zipEntry = new ZipEntry(candidate.getFullName() + ".pdf");
+                    zos.putNextEntry(zipEntry);
+                    zos.write(pdfBytes);
+                    zos.closeEntry();
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to download PDF file for: " + candidate.getFullName(), e);
+                }
+            }
+        }
+
+        byte[] zipBytes = baos.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/zip"));
+        headers.setContentDisposition(
+                ContentDisposition.attachment()
+                        .filename(zipFileName + ".zip", StandardCharsets.UTF_8)
+                        .build()
+        );
         headers.setCacheControl(CacheControl.noCache());
 
         return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);

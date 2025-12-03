@@ -151,7 +151,7 @@
                                                                                  th:text="${candidate.address.name}">Current Address</span>
                             </p>
                             <p><span class="label">Amount :</span><span class="value"
-                                                                        th:text="'$' + ${candidate.payment.amount}">0</span>
+                                                                        th:text="'$' + ${candidate.payment != null && candidate.payment.amount != null ? candidate.payment.amount.intValue() : 0}">0</span>
                             </p>
                         </td>
                     </tr>

@@ -4,6 +4,7 @@ import kh.com.kshrd.hrdregisterapi.model.dto.request.CandidateRequest;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponse;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.CandidateResponseAdmin;
 import kh.com.kshrd.hrdregisterapi.model.dto.response.PagedResponse;
+import kh.com.kshrd.hrdregisterapi.model.entity.Candidate;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -34,4 +35,6 @@ public interface CandidateService {
     PagedResponse<List<CandidateResponseAdmin>> getAllCandidatesAdminByGenerationId(UUID generationId, int page, int size, String sortBy, Sort.Direction direction);
 
     PagedResponse<List<CandidateResponse>> getAllCandidatesByGenerationId(UUID generationId, int page, int size, String sortBy, Sort.Direction direction);
+
+    List<Candidate> getAllCandidatesPaid();
 }
